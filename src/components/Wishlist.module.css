@@ -1,0 +1,20 @@
+img {
+    width: 15rem;
+    height: 15rem;
+    /* padding: 5px; */
+}
+
+.books {
+    display:flex;
+    flex-direction: column;
+    list-style-type: none;
+    /* width: 100vw; */
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    border: solid 2px black;
+    /* width: 50vw */
+}
