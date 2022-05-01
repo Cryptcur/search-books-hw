@@ -28,3 +28,25 @@ img {
     align-items: center;
     width: 35vw;
 }
+
+.no-wishlist {
+    display: flex;
+    justify-content: center;
+    width: 35vw;
+}
+
+.paginate {
+    display: flex;
+    flex-direction: column;
+}
+
+.pages {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+}
+
+.pages > * {
+    margin: 10px;
+    padding: 10px;
+}

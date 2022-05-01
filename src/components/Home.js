@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import style from "./Home.module.css";
+import Paginate from "./Pagination";
+
 
 const Home = ({ booklist, wishlist, setWishlist }) => {
   const [search, useSearch] = useState("");
-  console.log("Wishlist FROM Home", wishlist);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const HandleChange = (e) => {
     useSearch(e.target.value);
   };
 
-
   const addToWishlist = (e) => {
     if (wishlist.length > 0) {
       let wishlistBookId = wishlist.find((book) => book.id === e.target.id);
       if (wishlistBookId && wishlistBookId.id === e.target.id) {
+          alert('Already added to wishlist')
         return [...wishlist];
       } else {
         booklist.forEach((book) => {
@@ -43,28 +45,9 @@ const Home = ({ booklist, wishlist, setWishlist }) => {
       </form>
       <div className={style["home"]}>
         {!search ? (
-          <ul className={style["books"]}>
-            {booklist.map((book) => {
-              return (
-                <React.Fragment key={book.id}>
-                  <li
-                    id={book.id}
-                    className={style["card"]}
-                    onClick={addToWishlist}
-                  >
-                    <img alt="" src={book.volumeInfo.imageLinks.thumbnail} />
-                    <div className={style["book-info"]}>
-                      <p>{book.volumeInfo.title}</p>
-                      <p>{book.volumeInfo.publisher}</p>
-                      <p>{book.volumeInfo.publisherDate}</p>
-                    </div>
-                  </li>
-                </React.Fragment>
-              );
-            })}
-          </ul>
+            <Paginate setWishlist={setWishlist} wishlist={wishlist} addToWishlist={addToWishlist} currentPage={currentPage} onPageChange={setCurrentPage} totalCount={booklist.length} booklist={booklist} />
         ) : (
-          <ul>
+          <ul className={style['books']}>
             {booklist &&
               booklist
                 .filter((book) =>
@@ -96,7 +79,7 @@ const Home = ({ booklist, wishlist, setWishlist }) => {
             ))}
           </ul>
         ) : (
-          <div>none</div>
+          <div className={style['no-wishlist']}><h3>Nothing in wishlist</h3></div>
         )}
       </div>
     </>
@@ -104,3 +87,4 @@ const Home = ({ booklist, wishlist, setWishlist }) => {
 };
 
 export default Home;
+
