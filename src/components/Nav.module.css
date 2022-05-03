@@ -1,9 +1,30 @@
-.links {
+.links > .selected, .not-selected {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: flex-start;
-}
-
-.links > * {
     margin: 15px;
 }
+
+
+#link > * {
+    display: flex;
+    justify-content: space-around;
+    font-size: larger;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.selected {
+    padding: 15px;
+    background-color: coral;
+    width: 50px;
+}
+
+.not-selected {
+    padding: 15px;
+    width: 50px;
+}
+
+
+
+

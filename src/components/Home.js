@@ -1,15 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useMemo} from "react";
 import style from "./Home.module.css";
 import Paginate from "./Pagination";
 
+let pageSize = 5;
 
 const Home = ({ booklist, wishlist, setWishlist }) => {
-  const [search, useSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-
-  const HandleChange = (e) => {
-    useSearch(e.target.value);
-  };
 
   const addToWishlist = (e) => {
     if (wishlist.length > 0) {
@@ -33,6 +29,12 @@ const Home = ({ booklist, wishlist, setWishlist }) => {
     }
   };
 
+  const currentData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * pageSize;
+    const lastPageIdx = firstPageIndex + pageSize;
+    return booklist.slice(firstPageIndex, lastPageIdx);
+  }, [currentPage, booklist]);
+
   const handleDelete = (e) => {
     let filteredArr = wishlist.filter((book) => book.id !== e.target.id);
     setWishlist(filteredArr);
@@ -40,33 +42,9 @@ const Home = ({ booklist, wishlist, setWishlist }) => {
 
   return (
     <>
-      <form onSubmit={(ev) => ev.preventDefault()}>
-        <input value={search} onChange={HandleChange} />
-      </form>
       <div className={style["home"]}>
-        {!search ? (
-            <Paginate setWishlist={setWishlist} wishlist={wishlist} addToWishlist={addToWishlist} currentPage={currentPage} onPageChange={setCurrentPage} totalCount={booklist.length} booklist={booklist} />
-        ) : (
-          <ul className={style['books']}>
-            {booklist &&
-              booklist
-                .filter((book) =>
-                  book.volumeInfo.title
-                    .toLowerCase()
-                    .match(new RegExp(search.toLowerCase()))
-                )
-                .map((book) => (
-                  <li className={style["card"]} id={book.id} key={book.id}>
-                    <img alt="" src={book.volumeInfo.imageLinks.thumbnail} />
-                    <div className={style["book-info"]}>
-                      <p>{book.volumeInfo.title}</p>
-                      <p>{book.volumeInfo.publisher}</p>
-                      <p>{book.volumeInfo.publisherDate}</p>
-                    </div>
-                  </li>
-                ))}
-          </ul>
-        )}
+      <Paginate pageSize={pageSize} setWishlist={setWishlist} wishlist={wishlist} addToWishlist={addToWishlist} currentPage={currentPage} onPageChange={(page) => setCurrentPage(page)} totalCount={booklist.length} booklist={currentData} />
+        
         {wishlist && wishlist.length ? (
           <ul>
             {wishlist.map((book) => (
